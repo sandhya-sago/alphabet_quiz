@@ -1,0 +1,39 @@
+{
+  "name": "alphabet_quiz",
+  "version": "0.0.1",
+  "description": "A monorepo for full stack application generating quizzes",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run mocha",
+    "lint": "npx prettier . --write && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandhya-sago/alphabet_quiz.git"
+  },
+  "keywords": [
+    "Node",
+    "feathers.js",
+    "react"
+  ],
+  "author": "Sandhya G",
+  "license": "ISC",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "bugs": {
+    "url": "https://github.com/sandhya-sago/alphabet_quiz/issues"
+  },
+  "homepage": "https://github.com/sandhya-sago/alphabet_quiz#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.2.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "globals": "^15.2.0",
+    "prettier": "3.2.5",
+    "typescript-eslint": "^7.8.0"
+  }
+}
