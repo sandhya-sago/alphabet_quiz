@@ -29,9 +29,7 @@ export const UserForm = ({
       password: formData.get("password"),
     };
     try {
-      console.log("Creating user with ", formData, obj, onSubmit);
       await onSubmit(obj);
-      console.log("success to ", onSuccess);
       onSuccess();
     } catch (err) {
       setError(`${err}`);
@@ -51,7 +49,13 @@ export const UserForm = ({
         <Input type="password" isRequired name="password" />
       </FormControl>
       <FormControl isInvalid={!!error}>
-        <Button mt={4} width="40vw" isLoading={loading} type="submit">
+        <Button
+          mt={4}
+          width="40vw"
+          isLoading={loading}
+          type="submit"
+          colorScheme="green"
+        >
           {submitLabel}
         </Button>
         <FormErrorMessage>{error}</FormErrorMessage>
