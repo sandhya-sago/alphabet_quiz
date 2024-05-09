@@ -2,9 +2,7 @@
   "host": "localhost",
   "port": 3030,
   "public": "./public/",
-  "origins": [
-    "http://localhost:3030"
-  ],
+  "origins": ["http://localhost:3030"],
   "paginate": {
     "default": 10,
     "max": 50
@@ -14,10 +12,7 @@
     "entity": "user",
     "service": "users",
     "secret": "1XIT7Lh/niWNhORQ+yYsr3eSsXUwlVww",
-    "authStrategies": [
-      "jwt",
-      "local"
-    ],
+    "authStrategies": ["jwt", "local"],
     "jwtOptions": {
       "header": {
         "typ": "access"
