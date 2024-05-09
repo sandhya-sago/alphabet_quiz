@@ -4,7 +4,8 @@
   "description": "A monorepo for full stack application generating quizzes",
   "main": "index.js",
   "scripts": {
-    "test": "npm run mocha"
+    "test": "npm run mocha",
+    "lint": "npx prettier . --write && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,10 @@
   ],
   "author": "Sandhya G",
   "license": "ISC",
+  "workspaces": [
+    "server",
+    "client"
+  ],
   "bugs": {
     "url": "https://github.com/sandhya-sago/alphabet_quiz/issues"
   },

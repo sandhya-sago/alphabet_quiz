@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@alphabet_quiz/server",
   "description": "The backend for the Alphabet Quiz system",
   "version": "0.0.0",
   "homepage": "",
