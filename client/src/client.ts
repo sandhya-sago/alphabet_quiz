@@ -15,6 +15,7 @@ app.configure(authentication())
 // TODO: When logout, do app.logout()
 
 const usersService = app.service('users');
+const fileUploadService = app.service('file-upload')
 // export const testsService = app.service('tests');
 
-export { app, usersService }
+export { app, usersService, fileUploadService }
