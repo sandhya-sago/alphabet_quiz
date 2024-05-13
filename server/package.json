@@ -54,6 +54,7 @@
     "@feathersjs/socketio": "^5.0.25",
     "@feathersjs/transport-commons": "^5.0.25",
     "@feathersjs/typebox": "^5.0.25",
+    "csvtojson": "^2.0.10",
     "mongodb": "^6.6.1",
     "winston": "^3.13.0"
   },

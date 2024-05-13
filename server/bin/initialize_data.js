@@ -3,8 +3,12 @@
 import { parseArgs } from 'node:util'
 import { open } from 'node:fs/promises'
 import { MongoClient } from 'mongodb'
+import { exit } from 'node:process'
+import csv from 'csvtojson'
 
 // const args = ['-f', './data/alphabet_quiz.csv'];
+
+const ALPHABETS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 const options = {
   file: {
@@ -15,26 +19,27 @@ const options = {
 const { values } = parseArgs({ options, strict: true })
 console.log('File to be read:', values.file)
 
-const file = await open(values.file)
+const data = await csv().fromFile(values.file)
 
-const lines = await file.readLines()
-let header = []
-for await (const line of lines) {
-  // Read only the header
-  header = line.split(',').map((f, i) => (f.length > 0 ? f : `field_${i}`))
-  break
+let topics = []
+for (const row of data) {
+  let alpha = ''
+  for (const [key, value] of Object.entries(row)) {
+    if (key.startsWith('field')) {
+      alpha = value.toUpperCase()
+      continue
+    }
+    if (!(key in topics)) {
+      topics[key] = {}
+    }
+    topics[key][alpha] = value.replace(/\s+/g, ' ').trim()
+  }
 }
-const data = header.map(() => [])
-for await (const line of lines) {
-  const answers = line.split(',')
-  data.forEach((d, i) => {
-    data[i].push(answers[i])
-  })
-}
-// Note: Sometimes colums may repeat, overwrite the older one with righer one
-const topics = header.reduce((obj, head, idx) => ({ ...obj, [head]: data[idx] }), {})
-
-// console.log(topics)
+// TODO: combine topics and docs into one step
+const docs = Object.entries(topics).reduce(
+  (obj, [key, value]) => [...obj, { name: key, alphabets: value }],
+  []
+)
 
 const uri = 'mongodb://localhost:27017'
 const mongo = new MongoClient(uri)
@@ -43,8 +48,11 @@ try {
 } catch (err) {
   console.error('Could not connect to mongo\n', err)
 }
-
-const db = mongo.db('QuizDB')
-await db.createCollection('dataCollection')
-
-await mongo.close()
+try {
+  const db = mongo.db('QuizDB')
+  const factsCollection = await db.createCollection('facts')
+  const result = await factsCollection.insertMany(docs, { ordered: true })
+  console.log(`${result.insertedCount} documents were inserted`)
+} finally {
+  await mongo.close()
+}
