@@ -49,7 +49,8 @@ try {
   console.error('Could not connect to mongo\n', err)
 }
 try {
-  const db = mongo.db('QuizDB')
+  const db = mongo.db('server')
+  await db.collection('facts').drop()
   const factsCollection = await db.createCollection('facts')
   const result = await factsCollection.insertMany(docs, { ordered: true })
   console.log(`${result.insertedCount} documents were inserted`)

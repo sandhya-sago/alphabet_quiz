@@ -7,13 +7,13 @@
   "keywords": [
     "feathers"
   ],
+  "type": "module",
   "author": {},
   "contributors": [],
   "bugs": {},
   "engines": {
     "node": ">= 20.12.2"
   },
-  "type": "module",
   "feathers": {
     "language": "ts",
     "packager": "npm",
@@ -31,7 +31,7 @@
   },
   "main": "lib/index",
   "scripts": {
-    "dev": "nodemon -x ts-node src/index.ts",
+    "dev": "nodemon -x tsx src/index.ts",
     "compile": "shx rm -rf lib/ && tsc",
     "start": "node lib/",
     "prettier": "npx prettier \"**/*.ts\" --write",
@@ -56,6 +56,7 @@
     "@feathersjs/typebox": "^5.0.25",
     "csvtojson": "^2.0.10",
     "mongodb": "^6.6.1",
+    "tsx": "^4.10.2",
     "winston": "^3.13.0"
   },
   "devDependencies": {
