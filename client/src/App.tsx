@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Login } from "./routes/Login";
 import { Layout } from "./components/Layout";
 import { protectedLoader } from "./routes/ProtectionProvider";
+import { Home } from "./routes/Home";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
       {
         path: "home",
         loader: protectedLoader,
-        Component: () => <>This is a protected home page</>,
+        element: <Home />,
       },
     ],
   },

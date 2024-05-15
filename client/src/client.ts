@@ -3,7 +3,6 @@ import rest from '@feathersjs/rest-client'
 import authentication from '@feathersjs/authentication-client'
 
 import { SERVER_URL } from './constants'
-
 const app = feathers()
 
 // Connect to the same as the browser URL (only in the browser)
@@ -15,6 +14,6 @@ app.configure(authentication())
 // TODO: When logout, do app.logout()
 
 const usersService = app.service('users');
-// export const testsService = app.service('tests');
+const homeService = app.service('home')
 
-export { app, usersService }
+export { app, usersService , homeService}
