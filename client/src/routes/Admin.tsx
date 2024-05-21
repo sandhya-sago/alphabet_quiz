@@ -1,27 +1,15 @@
-import { useLocation, useNavigate } from "react-router-dom";
-
 import { useEffect, useState } from "react";
-import { quizService } from "../client";
 import {
   Heading,
   Input,
   Table,
-  Thead,
   Tbody,
-  Tfoot,
   Tr,
-  Th,
   Td,
-  TableCaption,
-  TableContainer,
   Text,
-  FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Button,
   Stack,
-  Checkbox,
   SimpleGrid,
   Box,
 } from "@chakra-ui/react";

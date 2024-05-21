@@ -9,7 +9,7 @@ import {
   Stack,
   InputGroup,
 } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { homeService } from "../client";

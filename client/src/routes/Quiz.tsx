@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { useEffect, useState } from "react";
 import { quizService } from "../client";
@@ -15,10 +15,6 @@ import {
   TableCaption,
   TableContainer,
   Text,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Button,
 } from "@chakra-ui/react";
 
