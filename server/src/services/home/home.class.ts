@@ -3,6 +3,7 @@ import type { Params } from '@feathersjs/feathers'
 import { MongoDBService } from '@feathersjs/mongodb'
 import type { MongoDBAdapterParams, MongoDBAdapterOptions } from '@feathersjs/mongodb'
 import { Paginated } from '@feathersjs/feathers'
+import { ObjectId } from 'mongodb'
 
 import type { Application } from '../../declarations'
 import type { Home, HomeData, HomePatch, HomeQuery } from './home.schema'
@@ -24,7 +25,29 @@ export class HomeService<ServiceParams extends Params = HomeParams> extends Mong
   async find(params?: ServiceParams & { paginate: false }): Promise<Home[]>
   async find(params?: ServiceParams): Promise<Paginated<Home> | Home[]>
   async find(params?: ServiceParams): Promise<Paginated<Home> | Home[]> {
-    return super.find({...params,  query: { $select: ["name"] }, paginate: false})
+    if (Object.keys(params?.query).length === 0) {
+      // Cannot set paginate on the client side
+      return super.find({ ...params, query: { $select: ['name'] }, paginate: false })
+    } else if (params?.query?._id?.$in) {
+      console.log('query with', params?.query?._id?.$in)
+      const ids = params?.query?._id?.$in.map((id: string) => new ObjectId(id))
+      const collection = await this.getModel()
+      const cursor = collection.find({ _id: { $in: ids } })
+      const data = await cursor.toArray()
+      // Now select the appropriate alphabets
+      // 1. filter for alphabets that have content.
+      const allAvalAlpha = data.map((h) =>
+        Object.entries(h.alphabets)
+          .filter(([_, val]) => !!val.toLowerCase().replace('none', '').replace('-', '').trim())
+          .map((pair) => pair[0])
+      )
+      const avalAlpha = allAvalAlpha.reduce((a, b) => a.filter((c) => b.includes(c)))
+      const randomIdxs = [...new Set(avalAlpha.map(() => (Math.random() * avalAlpha.length) | 0))].slice(0, 5)
+      const selectedAlpha = randomIdxs.map((i) => avalAlpha[i])
+      return selectedAlpha
+    } else {
+      return super.find(params)
+    }
   }
 }
 

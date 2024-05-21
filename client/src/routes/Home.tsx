@@ -9,6 +9,8 @@ import {
   Stack,
   InputGroup,
 } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
 import { homeService } from "../client";
 import { homeSchema } from "../../server/src/services/home/home.schema";
@@ -21,6 +23,7 @@ function toTitleCase(str: string) {
 
 export const Home = () => {
   const [allTopics, setAllTopics] = useState<homeSchema[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     homeService.find().then((data) => {
@@ -42,7 +45,15 @@ export const Home = () => {
       timer: formData.get("timer"),
       selectedTopics: formData.getAll("selectedTopics"),
     };
+    if (data.selectedTopics.length === 0) {
+      const randomIdxs = [
+        ...new Set(allTopics.map(() => (Math.random() * allTopics.length) | 0)),
+      ].slice(0, 5);
+      console.log({ randomIdxs });
+      data.selectedTopics = randomIdxs.map((i) => allTopics[i]._id);
+    }
     console.log(data);
+    navigate("/quiz", { state: data });
   };
   return (
     <>
