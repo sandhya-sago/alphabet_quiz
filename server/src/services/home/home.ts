@@ -18,7 +18,7 @@ import type { Application } from '../../declarations'
 import { HomeService, getOptions } from './home.class'
 
 export const homePath = 'home'
-export const homeMethods: Array<keyof HomeService> = ['find', 'get', 'create', 'patch', 'remove']
+export const homeMethods: Array<keyof HomeService> = ['find', 'get', 'create', 'patch', 'remove', 'update']
 
 export * from './home.class'
 export * from './home.schema'

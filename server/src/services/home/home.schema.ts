@@ -13,6 +13,7 @@ export const homeSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
     name: Type.String(),
+    alphabets: Type.Record(Type.String(), Type.String())
   },
   { $id: 'Home', additionalProperties: false }
 )
@@ -23,7 +24,7 @@ export const homeResolver = resolve<Home, HookContext<HomeService>>({})
 export const homeExternalResolver = resolve<Home, HookContext<HomeService>>({})
 
 // Schema for creating new entries
-export const homeDataSchema = Type.Pick(homeSchema, ['name'], {
+export const homeDataSchema = Type.Pick(homeSchema, ['name', 'alphabets'], {
   $id: 'HomeData'
 })
 export type HomeData = Static<typeof homeDataSchema>
@@ -39,7 +40,7 @@ export const homePatchValidator = getValidator(homePatchSchema, dataValidator)
 export const homePatchResolver = resolve<Home, HookContext<HomeService>>({})
 
 // Schema for allowed query properties
-export const homeQueryProperties = Type.Pick(homeSchema, ['_id', 'name',])
+export const homeQueryProperties = Type.Pick(homeSchema, ['_id', 'name'])
 export const homeQuerySchema = Type.Intersect(
   [
     querySyntax(homeQueryProperties),
