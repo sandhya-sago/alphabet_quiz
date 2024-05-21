@@ -2,16 +2,18 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Login } from "./routes/Login";
 import { Layout } from "./components/Layout";
-import { protectedLoader } from "./routes/ProtectionProvider";
+import { protectedLoader } from "./components/ProtectionProvider";
 import { Home } from "./routes/Home";
 import { Quiz } from "./routes/Quiz";
 import { Admin } from "./routes/Admin";
+import ErrorPage from "./components/Error";
 
 const router = createBrowserRouter([
   {
     path: "/",
     id: "root",
     Component: Layout,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "login",
