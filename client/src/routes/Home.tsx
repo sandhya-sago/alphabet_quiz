@@ -14,12 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { homeService } from "../client";
 import { homeSchema } from "../../server/src/services/home/home.schema";
-
-function toTitleCase(str: string) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
+import { formatTopics } from "../common/utils";
 
 export const Home = () => {
   const [allTopics, setAllTopics] = useState<homeSchema[]>([]);
@@ -27,13 +22,7 @@ export const Home = () => {
 
   useEffect(() => {
     homeService.find().then((data) => {
-      const topics = data
-        .map((d: homeSchema) => ({
-          ...d,
-          name: toTitleCase(d.name),
-        }))
-        .sort((a, b) => (a.name > b.name ? 1 : -1));
-      setAllTopics(topics as homeSchema[]);
+      setAllTopics(formatTopics(data) as homeSchema[]);
     });
   }, []);
 
