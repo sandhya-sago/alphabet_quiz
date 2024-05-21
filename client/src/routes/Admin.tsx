@@ -1,27 +1,15 @@
-import { useLocation, useNavigate } from "react-router-dom";
-
 import { useEffect, useState } from "react";
-import { quizService } from "../client";
 import {
   Heading,
   Input,
   Table,
-  Thead,
   Tbody,
-  Tfoot,
   Tr,
-  Th,
   Td,
-  TableCaption,
-  TableContainer,
   Text,
-  FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Button,
   Stack,
-  Checkbox,
   SimpleGrid,
   Box,
 } from "@chakra-ui/react";
@@ -34,19 +22,7 @@ import {
 } from "@chakra-ui/icons";
 import { homeService } from "../client";
 import { homeSchema } from "../../server/src/services/home/home.schema";
-function toTitleCase(str: string) {
-  return str.replace(/\w\S*/g, function (txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
-
-const formatTopics = (data) =>
-  data
-    .map((d: homeSchema) => ({
-      ...d,
-      name: toTitleCase(d.name),
-    }))
-    .sort((a, b) => (a.name > b.name ? 1 : -1));
+import { formatTopics, toTitleCase } from "../common/utils";
 
 export const Admin = () => {
   const [allTopics, setAllTopics] = useState<homeSchema[]>([]);

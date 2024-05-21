@@ -5,12 +5,11 @@ import type { MongoDBAdapterParams, MongoDBAdapterOptions } from '@feathersjs/mo
 
 import type { Application } from '../../declarations'
 import type { Quiz, QuizData, QuizPatch, QuizQuery } from './quiz.schema'
-
-export type { Quiz, QuizData, QuizPatch, QuizQuery }
 import { ObjectId } from 'mongodb'
 import { Paginated } from '@feathersjs/feathers'
-import { HomeService } from '../home/home.class'
 import { app } from '../../app'
+
+export type { Quiz, QuizData, QuizPatch, QuizQuery }
 
 export interface QuizParams extends MongoDBAdapterParams<QuizQuery> {}
 
