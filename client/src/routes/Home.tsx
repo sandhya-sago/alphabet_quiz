@@ -29,19 +29,10 @@ export const Home = () => {
   const generateTest = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    console.log("Generrate test with ");
     const data = {
       timer: formData.get("timer"),
       selectedTopics: formData.getAll("selectedTopics"),
     };
-    if (data.selectedTopics.length === 0) {
-      const randomIdxs = [
-        ...new Set(allTopics.map(() => (Math.random() * allTopics.length) | 0)),
-      ].slice(0, 5);
-      console.log({ randomIdxs });
-      data.selectedTopics = randomIdxs.map((i) => allTopics[i]._id);
-    }
-    console.log(data);
     navigate("/quiz", { state: data });
   };
   return (
