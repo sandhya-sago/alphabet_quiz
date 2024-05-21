@@ -75,7 +75,7 @@ export const Quiz = () => {
                 <Tr key={alpha}>
                   <Td>{alpha}</Td>
                   {quizData.topics.map((t) => (
-                    <Td>
+                    <Td key={`${t}:${alpha}`}>
                       <Input
                         variant="filled"
                         focusBorderColor="lime"

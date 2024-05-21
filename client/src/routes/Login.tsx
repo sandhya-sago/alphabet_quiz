@@ -13,7 +13,7 @@ import {
 export const Login = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const from = params.get("from") || "/";
+  const from = params.get("from") || "/home";
   const navigate = useNavigate();
 
   return (

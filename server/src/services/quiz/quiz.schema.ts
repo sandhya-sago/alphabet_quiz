@@ -40,7 +40,7 @@ export const quizPatchValidator = getValidator(quizPatchSchema, dataValidator)
 export const quizPatchResolver = resolve<Quiz, HookContext<QuizService>>({})
 
 // Schema for allowed query properties
-export const quizQueryProperties = Type.Pick(quizSchema, ['topics', 'alphabets'])
+export const quizQueryProperties = Type.Pick(quizSchema, ['_id', 'topics', 'alphabets'])
 export const quizQuerySchema = Type.Intersect(
   [
     querySyntax(quizQueryProperties),
