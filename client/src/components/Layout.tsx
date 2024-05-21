@@ -1,5 +1,5 @@
-import { Grid, GridItem } from "@chakra-ui/react";
-import { Outlet } from "react-router-dom";
+import { Grid, GridItem, Stack } from "@chakra-ui/react";
+import { Outlet, NavLink } from "react-router-dom";
 export const Layout = () => (
   <>
     <Grid
@@ -28,7 +28,11 @@ export const Layout = () => (
         borderRadius="lg"
         area={"nav"}
       >
-        Nav
+        <Stack spacing="24px">
+          <NavLink to="/home">Home</NavLink>
+          <NavLink to="/quiz">Quiz</NavLink>
+          <NavLink to="/admin">Admin</NavLink>
+        </Stack>
       </GridItem>
       <GridItem pl="2" area={"main"}>
         <Outlet />
