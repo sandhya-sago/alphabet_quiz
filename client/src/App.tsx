@@ -4,6 +4,7 @@ import { Login } from "./routes/Login";
 import { Layout } from "./components/Layout";
 import { protectedLoader } from "./routes/ProtectionProvider";
 import { Home } from "./routes/Home";
+import { Quiz } from "./routes/Quiz";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
         path: "home",
         loader: protectedLoader,
         element: <Home />,
+      },
+      {
+        path: "quiz",
+        loader: protectedLoader,
+        element: <Quiz />,
       },
     ],
   },
