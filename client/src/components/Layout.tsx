@@ -1,4 +1,4 @@
-import { Button, Grid, GridItem, Stack } from "@chakra-ui/react";
+import { Button, Grid, GridItem, Stack, Flex, Spacer } from "@chakra-ui/react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { NotAllowedIcon } from "@chakra-ui/icons";
 import { app } from "../client";
@@ -24,15 +24,18 @@ export const Layout = () => {
           borderRadius="lg"
           area={"header"}
         >
-          <Button
-            rightIcon={<NotAllowedIcon />}
-            onClick={async () => {
-              await app.logout();
-              navigate("/login");
-            }}
-          >
-            Logout
-          </Button>
+          <Flex>
+            <Spacer />
+            <Button
+              rightIcon={<NotAllowedIcon />}
+              onClick={async () => {
+                await app.logout();
+                navigate("/login");
+              }}
+            >
+              Logout
+            </Button>
+          </Flex>
         </GridItem>
         <GridItem
           pl="2"
