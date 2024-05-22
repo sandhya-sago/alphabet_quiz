@@ -21,7 +21,7 @@ import {
 
 const TIMER_UPDATE = 1; //Sec
 
-const CountdownTimer = ({ time = "180" }) => {
+const CountdownTimer = ({ time = "480", stop = false }) => {
   const [delay, setDelay] = useState(+time);
   const sign = delay < 0 ? "-" : "";
   const result =
@@ -34,6 +34,10 @@ const CountdownTimer = ({ time = "180" }) => {
     const timer = setInterval(() => {
       setDelay(delay - TIMER_UPDATE);
     }, TIMER_UPDATE * 1000);
+
+    if (stop) {
+      clearInterval(timer);
+    }
 
     return () => {
       clearInterval(timer);
@@ -52,8 +56,9 @@ export const Quiz = () => {
   const [quizData, setQuizData] = useState({ topics: [], alphabets: [] });
   const [answers, setAnswers] = useState({});
   const [correct, setCorrect] = useState({});
+  const [stopTimer, setStopTimer] = useState(false);
 
-  const timer = location.state.timer || 10;
+  const timer = location.state?.timer || 8;
 
   useEffect(() => {
     if (location.state?.selectedTopics) {
@@ -66,6 +71,7 @@ export const Quiz = () => {
 
   const submitQuiz = async (event) => {
     event.preventDefault();
+    setStopTimer(true);
     const filledData = new FormData(event.target);
     const filled = quizData.topics.reduce(
       (obj, t) => ({
@@ -145,7 +151,7 @@ export const Quiz = () => {
           <Button type="submit" colorScheme="green">
             Submit
           </Button>
-          <CountdownTimer time={String(timer * 60)} />
+          <CountdownTimer time={String(timer * 60)} stop={stopTimer} />
         </HStack>
       </form>
     </>
