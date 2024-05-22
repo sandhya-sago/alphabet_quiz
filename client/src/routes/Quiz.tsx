@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { quizService } from "../client";
 import {
   Heading,
+  HStack,
   Input,
   Table,
   Thead,
@@ -18,10 +19,42 @@ import {
   Button,
 } from "@chakra-ui/react";
 
+const TIMER_UPDATE = 1; //Sec
+
+const CountdownTimer = ({ time = "180" }) => {
+  const [delay, setDelay] = useState(+time);
+  const sign = delay < 0 ? "-" : "";
+  const result =
+    sign +
+    Math.abs(parseInt(String(delay / 60))) +
+    ":" +
+    String(Math.abs(delay % 60)).padStart(2, "0");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDelay(delay - TIMER_UPDATE);
+    }, TIMER_UPDATE * 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  });
+
+  return (
+    <Text fontSize="40px" color={sign.length === 0 ? "" : "tomato"}>
+      {result}
+    </Text>
+  );
+};
+
 export const Quiz = () => {
   const location = useLocation();
   const [quizData, setQuizData] = useState({ topics: [], alphabets: [] });
   const [answers, setAnswers] = useState({});
+  const [correct, setCorrect] = useState({});
+
+  const timer = location.state.timer || 10;
+
   useEffect(() => {
     if (location.state?.selectedTopics) {
       const query = { query: { _id: { $in: location.state.selectedTopics } } };
@@ -31,7 +64,7 @@ export const Quiz = () => {
     }
   }, [location.state?.selectedTopics]);
 
-  const submitQuiz = (event) => {
+  const submitQuiz = async (event) => {
     event.preventDefault();
     const filledData = new FormData(event.target);
     const filled = quizData.topics.reduce(
@@ -47,14 +80,27 @@ export const Quiz = () => {
       }),
       {}
     );
-    console.log(filled);
-    quizService
-      .create(quizData, {
-        headers: { "X-Service-Method": "getAnswers" },
-      })
-      .then((answers) => setAnswers(answers));
+    const ans = await quizService.create(quizData, {
+      headers: { "X-Service-Method": "getAnswers" },
+    });
+    setAnswers(ans);
+    setCorrect(
+      Object.entries(ans).reduce(
+        (obj, [topic, alpha]) => ({
+          ...obj,
+          [topic]: Object.entries(alpha).reduce(
+            (aobj, [char, answr]) => ({
+              ...aobj,
+              [char]: answr.toLowerCase() === filled[topic][char].toLowerCase(),
+            }),
+            {}
+          ),
+        }),
+        {}
+      )
+    );
   };
-  console.log({ quizData, answers });
+
   return (
     <>
       <Heading>Fill in terms starting with the alphabet</Heading>
@@ -83,7 +129,9 @@ export const Quiz = () => {
                         name={`${t}:${alpha}`}
                       />
                       {answers && answers[t] && answers[t][alpha] && (
-                        <Text color="tomato">{answers[t][alpha]}</Text>
+                        <Text color={correct[t][alpha] ? undefined : "tomato"}>
+                          {answers[t][alpha]}
+                        </Text>
                       )}
                     </Td>
                   ))}
@@ -93,9 +141,12 @@ export const Quiz = () => {
             <Tfoot></Tfoot>
           </Table>
         </TableContainer>
-        <Button type="submit" colorScheme="green">
-          Submit
-        </Button>
+        <HStack spacing="24px">
+          <Button type="submit" colorScheme="green">
+            Submit
+          </Button>
+          <CountdownTimer time={String(timer * 60)} />
+        </HStack>
       </form>
     </>
   );
