@@ -1,6 +1,0 @@
-# Authentication
-
-[] Logout
-[] User Avatar
-
-#
