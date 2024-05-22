@@ -29,7 +29,6 @@ export class HomeService<ServiceParams extends Params = HomeParams> extends Mong
       // Cannot set paginate on the client side
       return super.find({ ...params, query: { $select: ['name'] }, paginate: false })
     } else if (params?.query?._id?.$in) {
-      console.log('query with', params?.query?._id?.$in)
       const ids = params?.query?._id?.$in.map((id: string) => new ObjectId(id))
       const collection = await this.getModel()
       const cursor = collection.find({ _id: { $in: ids } })
@@ -41,6 +40,7 @@ export class HomeService<ServiceParams extends Params = HomeParams> extends Mong
           .filter(([_, val]) => !!val.toLowerCase().replace('none', '').replace('-', '').trim())
           .map((pair) => pair[0])
       )
+      // 2. randomly select atleast 5 from available
       const avalAlpha = allAvalAlpha.reduce((a, b) => a.filter((c) => b.includes(c)))
       const randomIdxs = [...new Set(avalAlpha.map(() => (Math.random() * avalAlpha.length) | 0))].slice(0, 5)
       const selectedAlpha = randomIdxs.map((i) => avalAlpha[i])

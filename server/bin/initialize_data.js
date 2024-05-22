@@ -51,9 +51,10 @@ try {
 try {
   const db = mongo.db('server')
   await db.collection('facts').drop()
-  const factsCollection = await db.createCollection('facts')
+  const factsCollection = await db.createCollection('facts', { collation: { locale: 'en', strength: 2 } })
   const result = await factsCollection.insertMany(docs, { ordered: true })
   console.log(`${result.insertedCount} documents were inserted`)
+  await factsCollection.createIndex({ name: 1 }, { unique: true })
 } finally {
   await mongo.close()
 }
