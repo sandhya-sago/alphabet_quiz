@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {
+  Alert,
+  AlertIcon,
   Heading,
   Input,
   Table,
@@ -28,6 +30,8 @@ export const Admin = () => {
   const [allTopics, setAllTopics] = useState<homeSchema[]>([]);
   const [selectedTopic, setSelectedTopic] = useState({});
   const [toSave, setToSave] = useState(false);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     homeService.find().then((data) => {
       setAllTopics(formatTopics(data) as homeSchema[]);
@@ -35,9 +39,11 @@ export const Admin = () => {
   }, []);
 
   const editTopic = async (id: string) => {
+    setError("");
     await homeService.get(id).then((facts) => setSelectedTopic(facts));
   };
   const addNewTopic = () => {
+    setError("");
     setSelectedTopic({
       name: "New Topic",
       alphabets: Array.from(new Array(26)).reduce(
@@ -59,17 +65,22 @@ export const Admin = () => {
           {}
         ),
     };
-    if (selectedTopic._id) {
-      const res = await homeService.update(selectedTopic._id, {
-        ...selectedTopic,
-        ...data,
-      });
-      setSelectedTopic(res);
-    } else {
-      const res = await homeService.create({ ...data });
-      setSelectedTopic(res);
-      const topics = await homeService.find();
-      setAllTopics(formatTopics(topics) as homeSchema[]);
+    try {
+      if (selectedTopic._id) {
+        const res = await homeService.update(selectedTopic._id, {
+          ...selectedTopic,
+          ...data,
+        });
+        setSelectedTopic(res);
+      } else {
+        const res = await homeService.create({ ...data });
+        setSelectedTopic(res);
+        const topics = await homeService.find();
+        setAllTopics(formatTopics(topics) as homeSchema[]);
+      }
+    } catch (err) {
+      setError("Unable to create or update topic." + err.message);
+      console.log(err);
     }
   };
   const deleteTopic = async () => {
@@ -108,6 +119,12 @@ export const Admin = () => {
         </Box>
         {selectedTopic.name ? (
           <Box>
+            {error && (
+              <Alert status="error">
+                <AlertIcon />
+                {error}
+              </Alert>
+            )}
             <form onChange={() => setToSave(true)} onSubmit={updateTopic}>
               <Heading>
                 Update{" "}
