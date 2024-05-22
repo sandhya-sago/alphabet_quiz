@@ -49,7 +49,7 @@ export const Home = () => {
                 name="timer"
                 min="5"
                 max="100"
-                defaultValue="10"
+                defaultValue="8"
                 htmlSize={4}
                 width="auto"
               />
